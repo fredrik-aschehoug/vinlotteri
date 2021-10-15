@@ -1,12 +1,20 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Vinlotteri.Models
 {
-    public class Lottery
+    public class Lottery: Document
     {
+        [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
+
+        [JsonProperty(PropertyName = "tickets")]
         public Ticket[] Tickets { get; set; }
+
+        [JsonProperty(PropertyName = "prizes")]
         public Guid[] Prizes { get; set; }
-        public Guid Completed { get; set; }
+
+        [JsonProperty(PropertyName = "completed")]
+        public bool Completed { get; set; }
     }
 }
