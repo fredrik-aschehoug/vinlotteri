@@ -6,7 +6,7 @@ using Vinlotteri.Repositories;
 
 namespace Vinlotteri.Controllers
 {
-    public class LotteryController: ApiController
+    public class LotteryController : ApiController
     {
         private readonly ILotteryRepository _repository;
 
@@ -41,9 +41,9 @@ namespace Vinlotteri.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create()
+        public async Task<IActionResult> Create([FromBody] Lottery lottery)
         {
-            var result = await _repository.CreateLotteryAsync();
+            var result = await _repository.CreateLotteryAsync(lottery.Name);
             return Ok(result);
 
         }

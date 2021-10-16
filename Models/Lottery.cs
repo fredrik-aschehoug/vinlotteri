@@ -8,6 +8,9 @@ namespace Vinlotteri.Models
         [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
 
+        [JsonProperty(PropertyName = "name")]
+        public string Name { get; set; }
+
         [JsonProperty(PropertyName = "tickets")]
         public Ticket[] Tickets { get; set; }
 
@@ -16,5 +19,7 @@ namespace Vinlotteri.Models
 
         [JsonProperty(PropertyName = "completed")]
         public bool Completed { get; set; }
+
+        public DateTime Created { get; set; } = DateTime.Now;
     }
 }

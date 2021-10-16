@@ -31,12 +31,13 @@ namespace Vinlotteri.Repositories
             return await _cosmosDbService.UpdateItemAsync(lottery);
         }
 
-        public async Task<Lottery> CreateLotteryAsync()
+        public async Task<Lottery> CreateLotteryAsync(string name)
         {
             var id = Guid.NewGuid();
             var lottery = new Lottery
             {
                 Id = id,
+                Name = name,
                 PartitionKey = id.ToString(),
                 Completed = false
             };
