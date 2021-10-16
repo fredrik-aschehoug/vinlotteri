@@ -1,14 +1,15 @@
-import { Field, Form, Formik, FormikValues } from 'formik';
 import React from 'react';
+import { Field, Form, Formik, FormikValues } from 'formik';
 import { useLotteries } from '../hooks/useLottery';
 import { Lottery } from '../types';
+import { Link } from 'react-router-dom';
 
 const NewLotteryForm = ({ onNew }: { onNew: (name: string) => Promise<void> }) => {
   const onSubmit = async (values: FormikValues) => {
     if (values.name) {
-      await onNew(values.name)
+      await onNew(values.name);
     }
-  }
+  };
 
   return (
     <Formik onSubmit={onSubmit} initialValues={{ name: '' }}>
@@ -18,21 +19,25 @@ const NewLotteryForm = ({ onNew }: { onNew: (name: string) => Promise<void> }) =
         <button type="submit">Legg til</button>
       </Form>
     </Formik>
-  )
-}
+  );
+};
 
 const LotteryRow = ({ lottery }: { lottery: Lottery }) => (
   <tr>
-    <td>{lottery.name}</td>
+    <td>
+      <Link to={`/${lottery.id}`}>{lottery.name}</Link>
+    </td>
     <td>{new Date(lottery.created).toLocaleString('nb-NO')}</td>
+    <td>{lottery.completed ? 'ja' : 'nei'}</td>
   </tr>
-)
+);
 
 const LotteriesTable = ({ lotteries }: { lotteries: Lottery[]; }) => (
   <table>
     <thead>
       <th>Navn</th>
       <th>Opprettet</th>
+      <th>Ferdig?</th>
     </thead>
     <tbody>
       {lotteries.map(lottery => <LotteryRow key={lottery.id} lottery={lottery} />)}

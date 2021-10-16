@@ -34,11 +34,20 @@ namespace Vinlotteri.Repositories
         public async Task<Lottery> CreateLotteryAsync(string name)
         {
             var id = Guid.NewGuid();
+
+            var tickets = new List<Ticket>();
+
+            for (int i = 1; i < 11; i++)
+            {
+                tickets.Add(new Ticket { Id = i });
+            }
+
             var lottery = new Lottery
             {
                 Id = id,
-                Name = name,
                 PartitionKey = id.ToString(),
+                Name = name,
+                Tickets = tickets,
                 Completed = false
             };
             var result = await _cosmosDbService.AddItemAsync(lottery, lottery.PartitionKey);

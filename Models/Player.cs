@@ -1,10 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 
 namespace Vinlotteri.Models
 {
-    public class Player
+    public class Player: Document
     {
+        [JsonProperty(PropertyName = "id")]
         public Guid Id { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
     }
 }

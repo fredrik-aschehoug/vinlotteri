@@ -25,7 +25,9 @@ namespace Vinlotteri
 
             services.AddControllersWithViews();
             services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
-            services.AddTransient<ILotteryRepository, LotteryRepository>();
+            services
+                .AddTransient<ILotteryRepository, LotteryRepository>()
+                .AddTransient<IPlayerRepository, PlayerRepository>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>

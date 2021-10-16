@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 
 namespace Vinlotteri.Models
 {
@@ -12,7 +13,7 @@ namespace Vinlotteri.Models
         public string Name { get; set; }
 
         [JsonProperty(PropertyName = "tickets")]
-        public Ticket[] Tickets { get; set; }
+        public ICollection<Ticket> Tickets { get; set; }
 
         [JsonProperty(PropertyName = "prizes")]
         public Guid[] Prizes { get; set; }
@@ -20,6 +21,7 @@ namespace Vinlotteri.Models
         [JsonProperty(PropertyName = "completed")]
         public bool Completed { get; set; }
 
+        [JsonProperty(PropertyName = "created")]
         public DateTime Created { get; set; } = DateTime.Now;
     }
 }
