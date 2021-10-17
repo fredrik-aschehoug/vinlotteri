@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Vinlotteri.Extensions;
 using Vinlotteri.Models;
@@ -17,9 +18,15 @@ namespace Vinlotteri.Repositories
         {
             var result = await _cosmosDbService
                 .GetLinqQueryableByType<Prize>(lotteryId.ToString())
+                .OrderByDescending(prize => prize.Price)
                 .ToListAsync();
 
             return result;
+        }
+
+        public async Task<Prize> UpdatePrizeAsync(Prize prize)
+        {
+            return await _cosmosDbService.UpdateItemAsync(prize);
         }
 
         public async Task<Prize> CreateAsync(Guid lotteryId, Prize prize)

@@ -23,5 +23,11 @@ export const useLottery = (id: string) => {
         return result;
     };
 
-    return { data, updateLottery };
+    const finalizeLottery = async () => {
+        const result = await postJsonAsync(`lottery/finalize/${id}`, null);
+        await mutate(result);
+        return result;
+    };
+
+    return { data, updateLottery, finalizeLottery };
 };

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 
-const Button = styled.button`
+const StyledButton = styled.button`
   border: 2px solid AliceBlue;
   border-radius: 2px;
   background-color: AliceBlue;
@@ -14,4 +14,6 @@ const Button = styled.button`
   }
 `;
 
-export const SubmitButton: FunctionComponent  = ({ children }) => <Button type="submit">{children}</Button>;
+export const SubmitButton: FunctionComponent  = ({ children }) => <StyledButton type="submit">{children}</StyledButton>;
+
+export const Button: FunctionComponent<{ onClick: () => void }>  = ({ children, onClick }) => <StyledButton type="button" onClick={onClick}>{children}</StyledButton>;

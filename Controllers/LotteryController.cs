@@ -3,16 +3,19 @@ using System;
 using System.Threading.Tasks;
 using Vinlotteri.Models;
 using Vinlotteri.Repositories;
+using Vinlotteri.Services;
 
 namespace Vinlotteri.Controllers
 {
     public class LotteryController : ApiController
     {
         private readonly ILotteryRepository _repository;
+        private readonly ILotteryService _service;
 
-        public LotteryController(ILotteryRepository repository)
+        public LotteryController(ILotteryRepository repository, ILotteryService service)
         {
             _repository = repository;
+            _service = service;
         }
 
         [HttpGet]
@@ -47,5 +50,14 @@ namespace Vinlotteri.Controllers
             return Ok(result);
 
         }
+
+        [HttpPost]
+        [Route("finalize/{id}")]
+        public async Task<IActionResult> Finalize(Guid id)
+        {
+            var result = await _service.FinalizeLottery(id);
+            return Ok(result);
+        }
+
     }
 }

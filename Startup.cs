@@ -36,6 +36,8 @@ namespace Vinlotteri
                 .AddTransient<ILotteryRepository, LotteryRepository>()
                 .AddTransient<IPlayerRepository, PlayerRepository>()
                 .AddTransient<IPrizeRepository, PrizeRepository>();
+            services
+                .AddTransient<ILotteryService, LotteryService>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
