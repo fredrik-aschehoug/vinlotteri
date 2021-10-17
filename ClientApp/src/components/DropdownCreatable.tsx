@@ -11,22 +11,23 @@ interface Option {
 interface Props {
     name: string;
     options: Option[];
-    onCreate: (inputValue: string) => Promise<void>;
+    onCreate: (inputValue: string) => Promise<Option>;
 }
 export const DropdownCreatable = ({ name, options, onCreate }: Props) => {
     const [isLoading, setIsLoading] = useState(false);
     const [, meta, helpers] = useField(name);
-    
+
     const { value } = meta;
     const { setValue } = helpers;
-    
+
     const handleChange = (newValue: OnChangeValue<Option, false>) => {
         setValue(newValue);
     };
 
     const handleCreate = async (inputValue: string) => {
         setIsLoading(true);
-        await onCreate(inputValue);
+        const newOption = await onCreate(inputValue);
+        setValue(newOption);
         setIsLoading(false);
     };
     return (

@@ -17,6 +17,11 @@ const TicketRow = ({ ticket }: { ticket: Ticket }) => {
 
   if (!players) return <span>Loading...</span>;
 
+  const onCreate = async (name: string) => {
+    const newPlayer = await createPlayer(name);
+    return ({ label: newPlayer.name, value: newPlayer.id });
+  }
+
   const options = players.map(player => ({ label: player.name, value: player.id }));
 
   return (
@@ -25,7 +30,7 @@ const TicketRow = ({ ticket }: { ticket: Ticket }) => {
       <DropdownCreatable
         name={`tickets[${ticket.id}]`}
         options={options}
-        onCreate={createPlayer}
+        onCreate={onCreate}
       />
     </Row>
   );
