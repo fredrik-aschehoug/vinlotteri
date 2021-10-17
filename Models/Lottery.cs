@@ -15,9 +15,6 @@ namespace Vinlotteri.Models
         [JsonProperty(PropertyName = "tickets")]
         public ICollection<Ticket> Tickets { get; set; }
 
-        [JsonProperty(PropertyName = "prizes")]
-        public Guid[] Prizes { get; set; }
-
         [JsonProperty(PropertyName = "completed")]
         public bool Completed { get; set; }
 

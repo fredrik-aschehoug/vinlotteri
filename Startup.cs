@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
+using Microsoft.Azure.Cosmos;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -24,10 +25,17 @@ namespace Vinlotteri
         {
 
             services.AddControllersWithViews();
-            services.AddSingleton<ICosmosDbService>(InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb")).GetAwaiter().GetResult());
+
+            var cosmosService = InitializeCosmosClientInstanceAsync(Configuration.GetSection("CosmosDb"))
+                .GetAwaiter()
+                .GetResult();
+
+            services
+                .AddSingleton<ICosmosDbService>(cosmosService);
             services
                 .AddTransient<ILotteryRepository, LotteryRepository>()
-                .AddTransient<IPlayerRepository, PlayerRepository>();
+                .AddTransient<IPlayerRepository, PlayerRepository>()
+                .AddTransient<IPrizeRepository, PrizeRepository>();
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -76,13 +84,15 @@ namespace Vinlotteri
 
         private static async Task<CosmosDbService> InitializeCosmosClientInstanceAsync(IConfigurationSection configurationSection)
         {
-            string databaseName = configurationSection.GetSection("DatabaseName").Value;
-            string containerName = configurationSection.GetSection("ContainerName").Value;
-            string account = configurationSection.GetSection("Account").Value;
-            string key = configurationSection.GetSection("Key").Value;
-            Microsoft.Azure.Cosmos.CosmosClient client = new Microsoft.Azure.Cosmos.CosmosClient(account, key);
-            CosmosDbService cosmosDbService = new CosmosDbService(client, databaseName, containerName);
-            Microsoft.Azure.Cosmos.DatabaseResponse database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
+            var databaseName = configurationSection.GetSection("DatabaseName").Value;
+            var containerName = configurationSection.GetSection("ContainerName").Value;
+            var account = configurationSection.GetSection("Account").Value;
+            var key = configurationSection.GetSection("Key").Value;
+
+            var client = new CosmosClient(account, key);
+            var cosmosDbService = new CosmosDbService(client, databaseName, containerName);
+            
+            var database = await client.CreateDatabaseIfNotExistsAsync(databaseName);
             await database.Database.CreateContainerIfNotExistsAsync(containerName, "/partitionKey");
 
             return cosmosDbService;

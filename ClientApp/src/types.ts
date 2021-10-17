@@ -1,4 +1,11 @@
 
+export interface Prize {
+    id: string;
+    name: string;
+    price: number;
+    winningTicket?: number;
+}
+
 export interface Player {
     id: string;
     name: string;

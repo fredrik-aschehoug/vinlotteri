@@ -24,12 +24,12 @@ namespace Vinlotteri.Services
             return await _container.CreateItemAsync<T>(document, new PartitionKey(partitionKey));
         }
 
-        public async Task<ItemResponse<T>> DeleteItemAsync<T>(Guid id, string partitionKey)
+        public async Task<ItemResponse<T>> DeleteItemAsync<T>(Guid id, string partitionKey) where T : Document
         {
             return await _container.DeleteItemAsync<T>(id.ToString(), new PartitionKey(partitionKey));
         }
 
-        public async Task<T> GetItemAsync<T>(Guid id, string partitionKey)
+        public async Task<T> GetItemAsync<T>(Guid id, string partitionKey) where T : Document
         {
             try
             {
@@ -43,14 +43,20 @@ namespace Vinlotteri.Services
 
         }
 
-        public IQueryable<T> GetLinqQueryable<T>(string partitionKey)
+        public IQueryable<T> GetLinqQueryable<T>(string partitionKey) where T : Document
+        {
+            return _container
+               .GetItemLinqQueryable<T>(requestOptions: new QueryRequestOptions { PartitionKey = new PartitionKey(partitionKey) });
+        }
+
+        public IQueryable<T> GetLinqQueryableByType<T>(string partitionKey) where T : Document
         {
             return _container
                .GetItemLinqQueryable<T>(requestOptions: new QueryRequestOptions { PartitionKey = new PartitionKey(partitionKey) })
-               .AsQueryable();
+               .Where(doc => doc.Type == typeof(T).Name);
         }
 
-        public IQueryable<T> GetCrossPartitionLinqQueryable<T>()
+        public IQueryable<T> GetCrossPartitionLinqQueryable<T>() where T : Document
         {
             return _container
                .GetItemLinqQueryable<T>();

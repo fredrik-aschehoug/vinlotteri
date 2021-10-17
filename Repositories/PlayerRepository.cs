@@ -41,8 +41,8 @@ namespace Vinlotteri.Repositories
                 PartitionKey = id.ToString(),
                 Name = name
             };
-            var result = await _cosmosDbService.AddItemAsync(player, player.PartitionKey);
-            return result;
+
+            return await _cosmosDbService.AddItemAsync(player, player.PartitionKey);
         }
     }
 }

@@ -1,0 +1,1 @@
+export { LotteriesPage } from './LotteriesPage';
