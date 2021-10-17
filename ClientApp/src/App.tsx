@@ -1,8 +1,8 @@
 import React from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
-import { LotteriesPage } from './components/LotteriesPage';
-import { LotteryPage } from './components/LotteryPage';
+import { LotteriesPage } from './components/Pages/LotteriesPage';
+import { LotteryPage } from './components/Pages/LotteryPage';
 
 import './custom.css'
 

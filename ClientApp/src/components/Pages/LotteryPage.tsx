@@ -1,10 +1,18 @@
 import React from 'react';
-import { Form, Formik, FormikValues } from 'formik';
-import { useLottery } from '../hooks/useLottery';
-import { Lottery, Player, Ticket } from '../types';
+import styled from 'styled-components';
 import { useParams } from 'react-router';
-import { usePlayers } from '../hooks/usePlayer';
-import { DropdownCreatable } from './DropdownCreatable';
+import { Form, Formik, FormikValues } from 'formik';
+import { Lottery, Player, Ticket } from '../../types';
+import { useLottery } from '../../hooks/useLottery';
+import { usePlayers } from '../../hooks/usePlayer';
+import { DropdownCreatable } from '../DropdownCreatable';
+import { SubmitButton } from '../Buttons';
+
+const Row = styled.div`
+    display: grid;
+    grid-template-columns: 20px 300px;
+    gap: 10px;
+`;
 
 const TicketRow = ({ ticket }: { ticket: Ticket }) => {
     const { data: players, createPlayer } = usePlayers();
@@ -14,14 +22,14 @@ const TicketRow = ({ ticket }: { ticket: Ticket }) => {
     const options = players.map(player => ({ label: player.name, value: player.id }));
 
     return (
-        <div>
+        <Row>
             {ticket.id}
             <DropdownCreatable
                 name={`tickets[${ticket.id}]`}
                 options={options}
                 onCreate={createPlayer}
             />
-        </div>
+        </Row>
     );
 };
 
@@ -54,7 +62,7 @@ const TicketsForm = ({ lottery, players, onSubmit }: TicketsFormProps) => {
         <Formik initialValues={{ tickets: initialValues }} onSubmit={submitHandler}>
             <Form>
                 {lottery.tickets.map(ticket => <TicketRow key={ticket.id} ticket={ticket} />)}
-                <button type="submit">Lagre</button>
+                <SubmitButton>Lagre</SubmitButton>
             </Form>
         </Formik>
     );
@@ -70,7 +78,7 @@ export const LotteryPage = () => {
 
     return (
         <div>
-            {lottery.name}
+            <h2>{lottery.name}</h2>
             <TicketsForm lottery={lottery} players={players} onSubmit={updateLottery} />
         </div>
     );
