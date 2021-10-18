@@ -27,7 +27,7 @@ const FinalizeLottery = () => {
   return (
     <section>
       Ferdig med registrering?
-      <Button onClick={onClick}>Gå til prisutdeling</Button>
+      <Button onClick={onClick}>Gå til prisutdeling 🎉</Button>
     </section>
   );
 };
